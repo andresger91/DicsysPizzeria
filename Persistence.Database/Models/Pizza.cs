@@ -9,16 +9,9 @@ namespace Persistence.Database.Models
         public int Id { get; set; }
         public string nombre { get; set; }
         public float precio { get; set; }
-
-        public int TamañoId { get; set; }
-
-        public Tamaño Tamaño { get; set; }
-
-        public int TipoId { get; set; }
-
-        public Tipo Tipo { get; set; }
-
         public List<DetallePedido> DetallePedido { get; set; }
+
+        public List<Ingrediente> Ingredientes { get; set; }
 
     }
 }

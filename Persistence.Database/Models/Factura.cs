@@ -10,6 +10,8 @@ namespace Persistence.Database.Models
 
         public DateTime fechaHoraEmision { get; set; }
 
+        public enum formaPago { Efectivo,Tarjeta }
+        
         public int PedidoId { get; set; }
 
         public Pedido Pedido{ get; set; }

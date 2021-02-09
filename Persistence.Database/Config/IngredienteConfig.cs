@@ -6,9 +6,10 @@ using System.Text;
 
 namespace Persistence.Database.Config
 {
-    public class PizzaConfig
+    public class IngredienteConfig
     {
-        public PizzaConfig(EntityTypeBuilder<Pizza> entityTypeBuilder)
+
+        public IngredienteConfig(EntityTypeBuilder<Ingrediente> entityTypeBuilder)
         {
             entityTypeBuilder.Property(x => x.nombre).HasMaxLength(50).IsRequired();
             entityTypeBuilder.HasIndex(x => x.nombre).IsUnique();

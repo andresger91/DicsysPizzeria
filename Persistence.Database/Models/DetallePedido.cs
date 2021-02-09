@@ -10,6 +10,10 @@ namespace Persistence.Database.Models
 
         public int cantidad { get; set; }
 
+        public string tamaño { get; set; }
+
+        public string tipo { get; set; }
+
         public int precio { get; set; }
 
         public int PizzaId { get; set; }

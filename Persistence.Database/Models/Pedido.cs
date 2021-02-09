@@ -11,11 +11,11 @@ namespace Persistence.Database.Models
         public DateTime fechaHoraEstimada { get; set; }
         public string nombreCliente { get; set; }
 
-        public int EstadoId { get; set; }
-        public Estado Estado { get; set; }
+        public string estado { get; set; }
 
         public List<Factura> Factura { get; set; }
 
         public List<DetallePedido> DetallePedido { get; set; }
+
     }
 }

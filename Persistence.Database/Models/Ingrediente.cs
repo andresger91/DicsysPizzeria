@@ -4,12 +4,13 @@ using System.Text;
 
 namespace Persistence.Database.Models
 {
-    public class Tamaño
+    public class Ingrediente
     {
-        public int Id{ get; set; }
-        public string nombre { get; set; }
-        public int cant_porciones { get; set; }
+        public int Id { get; set; }
 
-        public List<Pizza> Pizza { get; set; }
+        public string nombre { get; set; }
+
+        public List<Pizza> Pizzas { get; set; }
+
     }
 }
