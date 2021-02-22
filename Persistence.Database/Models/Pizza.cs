@@ -11,7 +11,7 @@ namespace Persistence.Database.Models
         public float precio { get; set; }
         public List<DetallePedido> DetallePedido { get; set; }
 
-        public List<Ingrediente> Ingredientes { get; set; }
+        public List<IngredientePizza> IngredientePizza { get; set; }
 
     }
 }

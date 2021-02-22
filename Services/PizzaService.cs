@@ -37,7 +37,7 @@ namespace Services
             using (var ctx = new ApplicationDbContext())
             {
                 Pizza pizza = ctx.Pizza.Where(t => t.Id == Id)
-                    .Include(t => t.Ingredientes).FirstOrDefault();
+                    .Include(t => t.IngredientePizza).FirstOrDefault();
                 return pizza;
             }
         }
@@ -46,8 +46,18 @@ namespace Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                List<Pizza> tags = ctx.Pizza.ToList();
-                return tags;
+                List<Pizza> pizzas = ctx.Pizza.ToList();
+                return pizzas;
+            }
+        }
+
+        public static List<Pizza> BuscarPorContenido(string contenido)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                List<Pizza> ListaPizzas = ctx.Pizza.Where(p => p.nombre.Contains(contenido)).ToList();
+
+                return ListaPizzas;
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Persistence.Database.Models
 
         public string nombre { get; set; }
 
-        public List<Pizza> Pizzas { get; set; }
+        public List<IngredientePizza> IngredientePizza { get; set; }
 
     }
 }

@@ -14,7 +14,7 @@ namespace Services
             using (var ctx = new ApplicationDbContext())
             {
                 Ingrediente ingrediente = ctx.Ingrediente.Where(p => p.Id == Id)
-                    .Include(t => t.Pizzas).FirstOrDefault();
+                    .Include(t => t.IngredientePizza).FirstOrDefault();
 
                 return ingrediente;
             }

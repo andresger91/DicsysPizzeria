@@ -9,33 +9,18 @@ namespace Services
 {
     public class PedidoService
     {
-        public void Add(Pedido pedido)
+        public static void Save(Pedido pedido)
         {
             using (var ctx = new ApplicationDbContext())
             {
                 try
                 {
-                    ctx.Pedido.Add(pedido);
-                    ctx.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    throw new ApplicationException("Error al guardar. " + ex.Message);
-                }
-            }
-        }
-
-        public void Cancel(Pedido pedido) 
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                try
-                {
-                    if (pedido.estado == "Encargado" || pedido.estado =="EnPreparacion")
-                    {
+                    if (pedido.Id != 0)
                         ctx.Entry(pedido).State = EntityState.Modified;
-                        ctx.SaveChanges();
-                    }
+                    
+                    else
+                        ctx.Pedido.Add(pedido);
+                    ctx.SaveChanges();
                 }
                 catch (Exception ex)
                 {
@@ -59,6 +44,16 @@ namespace Services
             using (var ctx = new ApplicationDbContext())
             {
                 List<Pedido> pedidos = ctx.Pedido.ToList();
+
+                return pedidos;
+            }
+        }
+
+        public static List<Pedido> GetPedidosACancelar()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                List<Pedido> pedidos = ctx.Pedido.Where(s=> s.estado == "Encargado" || s.estado == "EnPreparacion").ToList();
 
                 return pedidos;
             }

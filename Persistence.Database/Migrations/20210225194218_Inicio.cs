@@ -13,7 +13,7 @@ namespace Persistence.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    nombre = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -103,21 +103,21 @@ namespace Persistence.Database.Migrations
                 name: "IngredientePizza",
                 columns: table => new
                 {
-                    IngredientesId = table.Column<int>(type: "int", nullable: false),
-                    PizzasId = table.Column<int>(type: "int", nullable: false)
+                    PizzaId = table.Column<int>(type: "int", nullable: false),
+                    IngredienteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IngredientePizza", x => new { x.IngredientesId, x.PizzasId });
+                    table.PrimaryKey("PK_IngredientePizza", x => new { x.PizzaId, x.IngredienteId });
                     table.ForeignKey(
-                        name: "FK_IngredientePizza_Ingrediente_IngredientesId",
-                        column: x => x.IngredientesId,
+                        name: "FK_IngredientePizza_Ingrediente_IngredienteId",
+                        column: x => x.IngredienteId,
                         principalTable: "Ingrediente",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_IngredientePizza_Pizza_PizzasId",
-                        column: x => x.PizzasId,
+                        name: "FK_IngredientePizza_Pizza_PizzaId",
+                        column: x => x.PizzaId,
                         principalTable: "Pizza",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -139,9 +139,21 @@ namespace Persistence.Database.Migrations
                 column: "PedidoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IngredientePizza_PizzasId",
+                name: "IX_Ingrediente_nombre",
+                table: "Ingrediente",
+                column: "nombre",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IngredientePizza_IngredienteId",
                 table: "IngredientePizza",
-                column: "PizzasId");
+                column: "IngredienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pizza_nombre",
+                table: "Pizza",
+                column: "nombre",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -11,6 +11,10 @@ namespace Persistence.Database.Config
         public DetallePedidoConfig(EntityTypeBuilder<DetallePedido> entityTypeBuilder)
         {
             entityTypeBuilder.HasKey(x => new { x.Id, x.PedidoId });
+            entityTypeBuilder
+            .HasOne(pt => pt.Pedido)
+            .WithMany(p => p.DetallePedido)
+            .HasForeignKey(pt => pt.PedidoId);
         }
     }
 }

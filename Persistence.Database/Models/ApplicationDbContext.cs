@@ -18,6 +18,8 @@ namespace Persistence.Database.Models
         public virtual DbSet<DetallePedido> DetallePedido { get; set; }
         public virtual DbSet<Pizza> Pizza { get; set; }
         public virtual DbSet<Ingrediente> Ingrediente { get; set; }
+        
+        public virtual DbSet<IngredientePizza> IngredientePizza { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +28,7 @@ namespace Persistence.Database.Models
             new DetallePedidoConfig(modelBuilder.Entity<DetallePedido>());
             new PizzaConfig(modelBuilder.Entity<Pizza>());
             new IngredienteConfig(modelBuilder.Entity<Ingrediente>());
+            new IngredientePizzaConfig(modelBuilder.Entity<IngredientePizza>());
 
             base.OnModelCreating(modelBuilder);
         }

@@ -8,10 +8,10 @@ namespace Persistence.Database.Config
 {
     public class PedidoConfig
     {
-        public PedidoConfig(EntityTypeBuilder<Pedido> entityBuilder)
+        public PedidoConfig(EntityTypeBuilder<Pedido> entityTypeBuilder)
         {
-            entityBuilder.HasKey(x => x.Id);
-            entityBuilder.Property(x => x.nombreCliente).HasMaxLength(30).IsRequired();
+            entityTypeBuilder.HasKey(x => x.Id);
+            entityTypeBuilder.Property(x => x.nombreCliente).HasMaxLength(30).IsRequired();
         }
     }
 }

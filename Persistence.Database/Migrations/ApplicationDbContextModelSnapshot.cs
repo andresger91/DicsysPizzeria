@@ -19,21 +19,6 @@ namespace Persistence.Database.Migrations
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("IngredientePizza", b =>
-                {
-                    b.Property<int>("IngredientesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PizzasId")
-                        .HasColumnType("int");
-
-                    b.HasKey("IngredientesId", "PizzasId");
-
-                    b.HasIndex("PizzasId");
-
-                    b.ToTable("IngredientePizza");
-                });
-
             modelBuilder.Entity("Persistence.Database.Models.DetallePedido", b =>
                 {
                     b.Property<int>("Id")
@@ -106,6 +91,21 @@ namespace Persistence.Database.Migrations
                     b.ToTable("Ingrediente");
                 });
 
+            modelBuilder.Entity("Persistence.Database.Models.IngredientePizza", b =>
+                {
+                    b.Property<int>("PizzaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IngredienteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PizzaId", "IngredienteId");
+
+                    b.HasIndex("IngredienteId");
+
+                    b.ToTable("IngredientePizza");
+                });
+
             modelBuilder.Entity("Persistence.Database.Models.Pedido", b =>
                 {
                     b.Property<int>("Id")
@@ -155,21 +155,6 @@ namespace Persistence.Database.Migrations
                     b.ToTable("Pizza");
                 });
 
-            modelBuilder.Entity("IngredientePizza", b =>
-                {
-                    b.HasOne("Persistence.Database.Models.Ingrediente", null)
-                        .WithMany()
-                        .HasForeignKey("IngredientesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Persistence.Database.Models.Pizza", null)
-                        .WithMany()
-                        .HasForeignKey("PizzasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Persistence.Database.Models.DetallePedido", b =>
                 {
                     b.HasOne("Persistence.Database.Models.Pedido", "Pedido")
@@ -200,6 +185,30 @@ namespace Persistence.Database.Migrations
                     b.Navigation("Pedido");
                 });
 
+            modelBuilder.Entity("Persistence.Database.Models.IngredientePizza", b =>
+                {
+                    b.HasOne("Persistence.Database.Models.Ingrediente", "Ingrediente")
+                        .WithMany("IngredientePizza")
+                        .HasForeignKey("IngredienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Persistence.Database.Models.Pizza", "Pizza")
+                        .WithMany("IngredientePizza")
+                        .HasForeignKey("PizzaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingrediente");
+
+                    b.Navigation("Pizza");
+                });
+
+            modelBuilder.Entity("Persistence.Database.Models.Ingrediente", b =>
+                {
+                    b.Navigation("IngredientePizza");
+                });
+
             modelBuilder.Entity("Persistence.Database.Models.Pedido", b =>
                 {
                     b.Navigation("DetallePedido");
@@ -210,6 +219,8 @@ namespace Persistence.Database.Migrations
             modelBuilder.Entity("Persistence.Database.Models.Pizza", b =>
                 {
                     b.Navigation("DetallePedido");
+
+                    b.Navigation("IngredientePizza");
                 });
 #pragma warning restore 612, 618
         }
