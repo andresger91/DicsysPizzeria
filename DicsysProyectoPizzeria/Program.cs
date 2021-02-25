@@ -18,8 +18,7 @@ namespace DicsysProyectoPizzeria
                 String[] nombreEstados = { "Encargado", "EnPreparacion", "Preparado", "Entregado","Cancelado" };
                 while (ejecucion)
                 {
-                    Console.WriteLine("-------------------------");
-                    Console.WriteLine("Elegir una opción:");
+                    Console.WriteLine("----------Menú de opciones------------");
                     Console.WriteLine("1- Ingresar/modificar precio a la pizza");
                     Console.WriteLine("2- Crear pedido");
                     Console.WriteLine("3- Crear detalle y añadir a un pedido");
@@ -30,6 +29,7 @@ namespace DicsysProyectoPizzeria
                     Console.WriteLine("8- Generar factura");
                     Console.WriteLine("9- Mostrar facturas");
                     Console.WriteLine("0- SALIR:");
+                    Console.Write("Elegir opción: ");
                     var opcion = Int32.Parse(Console.ReadLine());
                     switch (opcion)
                     {
@@ -56,7 +56,8 @@ namespace DicsysProyectoPizzeria
                                 }
                                 List<Pizza> pizzas = Services.PizzaService.GetAll();
                                 List<Ingrediente> ingredientes = Services.IngredienteService.GetAll();
-
+                                
+                                //cargar la tabla intermedia ingrediente_pizza
                                 foreach (var i in pizzas)
                                 {
                                     foreach (var j in ingredientes)
@@ -144,13 +145,11 @@ namespace DicsysProyectoPizzeria
                             if (res == 0)
                             {
                                 ped = Services.PedidoService.GetPedidosACancelar();
-                                if (ped.Count > 0)
+                                if (ped.Count != 0)
                                 {
-                                    foreach (var i in ped)
-                                        Console.WriteLine(i.Id + " - " + i.nombreCliente + " - " + i.estado);
+                                    mostrarPedidos(ped);
                                     Console.Write("Seleccione un pedido para cancelar: ");
-                                    var idCancel = Int32.Parse(Console.ReadLine());
-                                    pedSel = Services.PedidoService.GetById(idCancel);
+                                    pedSel = buscarPedido();
                                     if (pedSel != null)
                                     {
                                         pedSel.estado = nombreEstados[4];
@@ -163,11 +162,9 @@ namespace DicsysProyectoPizzeria
                             else
                             {
                                 ped = Services.PedidoService.GetAll();
-                                foreach (var i in ped)
-                                    Console.WriteLine(i.Id + " - " + i.nombreCliente + " - " + i.estado);
+                                mostrarPedidos(ped);
                                 Console.Write("Seleccione un pedido para cambiar su estado: ");
-                                var idSel = Int32.Parse(Console.ReadLine());
-                                pedSel = Services.PedidoService.GetById(idSel);
+                                pedSel = buscarPedido();
                                 if (pedSel != null)
                                 {
                                     for (int i=0; i < nombreEstados.Length; i++)
@@ -175,11 +172,22 @@ namespace DicsysProyectoPizzeria
                                         if (pedSel.estado.Equals(nombreEstados[i]) && i<3 )
                                         {
                                             pedSel.estado = nombreEstados[i + 1];
+                                            Services.PedidoService.Save(pedSel);
                                             break;
                                         }
                                     }
-                                    Services.PedidoService.Save(pedSel);
+                                    
                                 }
+                            }
+                            static void mostrarPedidos(List<Pedido> lista)
+                            {
+                                foreach (var i in lista)
+                                    Console.WriteLine(i.Id + " - " + i.nombreCliente + " - " + i.estado);
+                            }
+                            static Pedido buscarPedido()
+                            {
+                                var idSel = Int32.Parse(Console.ReadLine());
+                                return Services.PedidoService.GetById(idSel);
                             }
                             break;
                         case 6:
@@ -190,6 +198,18 @@ namespace DicsysProyectoPizzeria
                             {
                                 Console.WriteLine("--Datos del pedido del cliente--");
                                 Console.WriteLine(busq.Id + " - " + busq.fechaHoraEmision + " - " + busq.nombreCliente + " - " + busq.estado);
+                                if (busq.DetallePedido.Count != 0)
+                                {
+                                    Console.WriteLine("Detalles del pedido:");
+                                    foreach (var t in busq.DetallePedido)
+                                    {
+                                        Console.WriteLine("Id: " + t.Id + " - Subtotal: "+ t.precio);
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("No tiene detalles asociados.");
+                                }
                             }
                             break;
                         case 7:
@@ -199,8 +219,24 @@ namespace DicsysProyectoPizzeria
                                 Console.WriteLine(i.Id + " - "+i.fechaHoraEmision+" - " + i.nombreCliente + " - " + i.estado);
                             break;
                         case 8:
+                            List<Pedido> pedFacts = Services.PedidoService.GetPedidosAFacturar();
+                            Console.WriteLine("--Todos los Pedidos a facturar--");
+                            foreach (var i in pedFacts)
+                                Console.WriteLine(i.Id + " - " + i.fechaHoraEmision + " - " + i.nombreCliente + " - " + i.estado);
+                            Console.Write("Ingrese id de pedido: ");
+                            var iFac = Int32.Parse(Console.ReadLine());
+                            Pedido pedFac = Services.PedidoService.GetById(iFac);
+                            if(pedFac != null)
+                            {
+                                Factura factNuevo = new Factura { fechaHoraEmision = DateTime.Now, PedidoId = pedFac.Id };
+                                Services.FacturaService.Save(factNuevo);
+                            }
                             break;
                         case 9:
+                            List<Factura> facturas = Services.FacturaService.GetAll();
+                            Console.WriteLine("--Todas las facturas de la pizzeria--");
+                            foreach (var i in facturas)
+                                Console.WriteLine(i.Id + " - " + i.fechaHoraEmision + " - " + i.PedidoId);
                             break;
                         default:
                             Console.WriteLine("No existe esa opción.");

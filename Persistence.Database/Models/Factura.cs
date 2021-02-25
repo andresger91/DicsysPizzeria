@@ -9,8 +9,6 @@ namespace Persistence.Database.Models
         public int Id { get; set; }
 
         public DateTime fechaHoraEmision { get; set; }
-
-        public enum formaPago { Efectivo,Tarjeta }
         
         public int PedidoId { get; set; }
 

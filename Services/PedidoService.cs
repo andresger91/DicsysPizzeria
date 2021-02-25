@@ -58,5 +58,15 @@ namespace Services
                 return pedidos;
             }
         }
+
+        public static List<Pedido> GetPedidosAFacturar()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                List<Pedido> pedidos = ctx.Pedido.Where(s => s.estado == "Preparado" || s.estado == "Entregado").ToList();
+
+                return pedidos;
+            }
+        }
     }
 }
