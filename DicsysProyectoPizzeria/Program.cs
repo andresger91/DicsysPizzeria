@@ -111,7 +111,7 @@ namespace DicsysProyectoPizzeria
                             Console.Write("Ingrese numero de pedido para añadir detalle: ");
                             var ingPed = Int32.Parse(Console.ReadLine());
                             Pedido pedidoEnc = Services.PedidoService.GetById(ingPed);
-                            if( pedidoEnc!=null)
+                            if( pedidoEnc!=null && pedidoEnc.estado.Equals(nombreEstados[0]))
                             {
                                 foreach (var i in Services.PizzaService.GetAll())
                                     Console.WriteLine(i.Id + " - " + i.nombre);
@@ -156,7 +156,8 @@ namespace DicsysProyectoPizzeria
                                     mostrarPedidos(ped);
                                     Console.Write("Seleccione un pedido para cancelar: ");
                                     pedSel = buscarPedido();
-                                    if (pedSel != null)
+                                    //verifico que el pedido devuelto no sea nulo y posee estado Encargado o EnPreparacion
+                                    if (pedSel != null && (pedSel.estado.Equals(nombreEstados[0]) || pedSel.estado.Equals(nombreEstados[1])))
                                     {
                                         pedSel.estado = nombreEstados[4];
                                         Services.PedidoService.Save(pedSel);
@@ -232,7 +233,8 @@ namespace DicsysProyectoPizzeria
                             Console.Write("Ingrese id de pedido: ");
                             var iFac = Int32.Parse(Console.ReadLine());
                             Pedido pedFac = Services.PedidoService.GetById(iFac);
-                            if(pedFac != null)
+                            //verifico que el pedido devuelto no sea nulo y posee estado Preparado o Entregado
+                            if (pedFac != null && (pedFac.estado.Equals(nombreEstados[2]) || pedFac.estado.Equals(nombreEstados[3])))
                             {
                                 Factura factNuevo = new Factura { fechaHoraEmision = DateTime.Now, PedidoId = pedFac.Id };
                                 Services.FacturaService.Save(factNuevo);
