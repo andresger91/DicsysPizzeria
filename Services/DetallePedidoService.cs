@@ -32,22 +32,13 @@ namespace Services
             }
         }
 
-        public static DetallePedido GetById(int intId)
-        {
-            using (var ctx = new ApplicationDbContext())
-            { 
-                return ctx.DetallePedido.Where(x => x.Id == intId).FirstOrDefault<DetallePedido>();
-            }
-        }
-
-
-        public static List<DetallePedido> GetAll()
+        public static DetallePedido GetById(int Id, int Id2)
         {
             using (var ctx = new ApplicationDbContext())
             {
-                List<DetallePedido> detallePedidos = ctx.DetallePedido.ToList();
-
-                return detallePedidos;
+                DetallePedido detalle = ctx.DetallePedido.Where(t => t.Id == Id && t.PedidoId == Id2)
+                    .Include(t => t.Pizza).FirstOrDefault();
+                return detalle;
             }
         }
 

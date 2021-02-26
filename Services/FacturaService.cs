@@ -38,6 +38,17 @@ namespace Services
                 return facturas;
             }
         }
+
+        public static List<Factura> GetFacturaByTime(DateTime fechaDesde, DateTime fechaHasta)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                List<Factura> facturas = ctx.Factura.Where(x => x.fechaHoraEmision >= fechaDesde && x.fechaHoraEmision <= fechaHasta).ToList();
+
+                return facturas;
+            }
+
+        }
     }
 
     

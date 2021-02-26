@@ -9,17 +9,6 @@ namespace Services
 {
     public class IngredientePizzaService
     {
-        
-        public static List<IngredientePizza> GetAll()
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                List<IngredientePizza> pizza_ingrediente = ctx.IngredientePizza.ToList();
-
-                return pizza_ingrediente;
-            }
-        }
-
         public static void Save(IngredientePizza nuevo)
         {
             using (var ctx = new ApplicationDbContext())

@@ -51,14 +51,5 @@ namespace Services
             }
         }
 
-        public static List<Pizza> BuscarPorContenido(string contenido)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                List<Pizza> ListaPizzas = ctx.Pizza.Where(p => p.nombre.Contains(contenido)).ToList();
-
-                return ListaPizzas;
-            }
-        }
     }
 }

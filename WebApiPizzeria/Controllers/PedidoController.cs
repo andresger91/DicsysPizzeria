@@ -11,15 +11,9 @@ namespace WebApiPizzeria.Controllers
     [ApiController]
     public class PedidoController: ControllerBase
     {
-        /*
+        
         [HttpGet("int/{id:int}")]
-        public IActionResult GetIntPedido(int id)
-        {
-            return ControllerContext.MyDisplayRouteInfo(id);
-        }*/
-        /*
-        [HttpGet("int/{id:int}")]
-        public IActionResult GetById(int id)
+        public ActionResult GetById(int id)
         {
             Pedido pedido = Services.PedidoService.GetById(id);
             if (pedido == null)
@@ -27,6 +21,17 @@ namespace WebApiPizzeria.Controllers
                 return NotFound();  // status 404
             }
             return Ok(pedido);
-        }*/
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            List<Pedido> pedidos = Services.PedidoService.GetAll();
+            if (pedidos == null)
+            {
+                return NotFound();  // status 404
+            }
+            return Ok(pedidos);
+        }
     }
 }

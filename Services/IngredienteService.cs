@@ -52,36 +52,5 @@ namespace Services
                 }
             }
         }
-
-        public static List<Ingrediente> BuscarPorContenido(string contenido)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                List<Ingrediente> ListaIngredientes = ctx.Ingrediente.Where(p => p.nombre.Contains(contenido)).ToList();
-
-                return ListaIngredientes;
-            }
-        }
-
-        public static bool Delete(int Id)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                Ingrediente resultado = Get(Id);
-
-                if (resultado != null)
-                {
-                    ctx.Ingrediente.Remove(resultado);
-
-                    ctx.SaveChanges();
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-        }
     }
 }

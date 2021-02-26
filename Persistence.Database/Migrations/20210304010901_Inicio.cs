@@ -74,17 +74,18 @@ namespace Persistence.Database.Migrations
                 name: "DetallePedido",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    PedidoId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     cantidad = table.Column<int>(type: "int", nullable: false),
                     tamaño = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     tipo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     precio = table.Column<int>(type: "int", nullable: false),
-                    PizzaId = table.Column<int>(type: "int", nullable: false)
+                    PizzaId = table.Column<int>(type: "int", nullable: false),
+                    PedidoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DetallePedido", x => new { x.Id, x.PedidoId });
+                    table.PrimaryKey("PK_DetallePedido", x => x.Id);
                     table.ForeignKey(
                         name: "FK_DetallePedido_Pedido_PedidoId",
                         column: x => x.PedidoId,

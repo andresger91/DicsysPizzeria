@@ -10,7 +10,7 @@ using Persistence.Database.Models;
 namespace Persistence.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210225194218_Inicio")]
+    [Migration("20210304010901_Inicio")]
     partial class Inicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,9 @@ namespace Persistence.Database.Migrations
             modelBuilder.Entity("Persistence.Database.Models.DetallePedido", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("PedidoId")
                         .HasColumnType("int");
@@ -44,7 +46,7 @@ namespace Persistence.Database.Migrations
                     b.Property<string>("tipo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id", "PedidoId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PedidoId");
 
