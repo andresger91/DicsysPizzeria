@@ -16,6 +16,11 @@ namespace DicsysProyectoPizzeria
                 bool ejecucion = true;
 
                 String[] nombreEstados = { "Encargado", "EnPreparacion", "Preparado", "Entregado","Cancelado" };
+
+                String[] nombreTipo = { "A la piedra", "A la parrilla", "Al horno" };
+                String[] nombreTamaño = { "4 porciones", "8 porciones", "12 porciones" };
+                double[] porcentajesTipo = { 1.5, 1.3, 1.1 };
+                double[] porcentajesTamaño = { 1.0, 1.8, 2.6 };
                 while (ejecucion)
                 {
                     Console.WriteLine("----------Menú de opciones------------");
@@ -99,20 +104,14 @@ namespace DicsysProyectoPizzeria
                         case 2:
                             Console.Write("Ingrese nombre de cliente: ");
                             string nombreCliente = Console.ReadLine();
-                            Console.Write("Ingrese tiempo de demora en minutos: ");
-                            int dem = Int32.Parse(Console.ReadLine());
-                            Pedido nuevo = new Pedido { nombreCliente = nombreCliente, fechaHoraEmision = DateTime.Now, estado = nombreEstados[0], fechaHoraEstimada = DateTime.Now.AddMinutes(dem) };
+                            Pedido nuevo = new Pedido { nombreCliente = nombreCliente, fechaHoraEmision = DateTime.Now, estado = nombreEstados[0], fechaHoraEstimada = DateTime.Now };
                             Services.PedidoService.Save(nuevo);
                             break;
                         case 3:
-                            String[] nombreTipo = { "A la piedra", "A la parrilla", "Al horno" };
-                            String[] nombreTamaño = { "4 porciones", "8 porciones", "12 porciones" };
-                            double[] porcentajesTipo = { 1.5, 1.3, 1.1 };
-                            double[] porcentajesTamaño = { 1.0, 1.8, 2.6 };
                             Console.Write("Ingrese numero de pedido para añadir detalle: ");
                             var ingPed = Int32.Parse(Console.ReadLine());
-                            Pedido buscar = Services.PedidoService.GetById(ingPed);
-                            if(buscar!=null)
+                            Pedido pedidoEnc = Services.PedidoService.GetById(ingPed);
+                            if( pedidoEnc!=null)
                             {
                                 foreach (var i in Services.PizzaService.GetAll())
                                     Console.WriteLine(i.Id + " - " + i.nombre);
@@ -129,8 +128,15 @@ namespace DicsysProyectoPizzeria
                                     Console.WriteLine(i + " - " + nombreTamaño[i]);
                                 Console.Write("Elija un tamaño: ");
                                 var ing4 = Int32.Parse(Console.ReadLine());
+
+                                
+                                Console.Write("Ingrese tiempo de demora en minutos: ");
+                                int dem = Int32.Parse(Console.ReadLine());
+                                pedidoEnc.fechaHoraEstimada = pedidoEnc.fechaHoraEstimada.AddMinutes(dem);
+                                Services.PedidoService.Save(pedidoEnc);
+
                                 int subTotal = (int)(pedPizza.precio * porcentajesTamaño[ing4] * porcentajesTipo[ing3])*ing2;
-                                DetallePedido nuevoDetalle = new DetallePedido { PizzaId = ing1, cantidad = ing2, tipo = nombreTipo[ing3], tamaño = nombreTipo[ing4], precio = subTotal, PedidoId = buscar.Id };
+                                DetallePedido nuevoDetalle = new DetallePedido { cantidad = ing2, tipo = nombreTipo[ing3], tamaño = nombreTamaño[ing4], precio = subTotal, PedidoId = pedidoEnc.Id};
                                 Services.DetallePedidoService.Save(nuevoDetalle);
                             }
                             break;
